@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
     "build": "rm -rf ./dist && rollup -c",
-    "publish": "pnpm publish --access public",
+    "npm-publish": "pnpm publish --access public",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "peerDependencies": {
