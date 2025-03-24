@@ -3,7 +3,7 @@
   "author": "Vojtěch Seidler <mail@vojtech-seidler.cz>",
   "keywords": [],
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "packageManager": "pnpm@10.6.3",
   "main": "dist/index.cjs.js",
