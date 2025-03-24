@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.6.3",
   "scripts": {
     "build": "pnpm run --filter=dnd-kit-tree build",
+    "publish": "pnpm run build && pnpm run --filter=dnd-kit-tree publish",
     "dev": "pnpm run --filter=dnd-kit-tree build --watch",
     "storybook:dev": "pnpm run --filter=storybook storybook",
     "storybook:build": "pnpm run build && pnpm run --filter=storybook build-storybook"
