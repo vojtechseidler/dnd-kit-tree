@@ -17,22 +17,6 @@ npm install dnd-kit-tree
 ## Example
 
 ```jsx
-import React from 'react';
-import Tree from 'dnd-kit-tree';
-
-const App = () => {
-  const treeData = [
-    { id: '1', parentId: null, text: 'Node 1' },
-    { id: '2', parentId: '1', text: 'Child Node 1' },
-  ];
-
-  return <Tree data={treeData} />;
-};
-
-export default App;
-```
-
-```jsx
 import { useState } from "react";
 import { SortableTree, TreeItems } from "dnd-kit-tree";
 
