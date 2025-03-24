@@ -37,8 +37,8 @@ export default App;
 
 | Prop       | Type     | Description                          |
 |------------|----------|--------------------------------------|
-| `data`     | `array`  | Array of tree nodes.                |
-| `onDragEnd`| `func`   | Callback for drag-and-drop events.  |
+| `data`     | `array`  | Array of tree nodes.                 |
+| `onDragEnd`| `func`   | Callback for drag-and-drop events.   |
 
 ## Contributing
 
