@@ -1,68 +1,92 @@
-import React, { forwardRef, HTMLAttributes } from "react";
+import clsx from "clsx";
+import styled from "styled-components";
+import { forwardRef, HTMLAttributes, ReactNode } from "react";
 
-import { ActionProps } from "../Item/components/Action";
-import { Action, Handle, Remove } from "../Item/components";
+import { FlattenedItem } from "../../types";
+import type { ActionProps } from "./components";
+import { Action, Remove, Handle } from "./components";
 
-export interface Props extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
-  childCount?: number;
-  clone?: boolean;
-  collapsed?: boolean;
+export interface Props<T> extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
   depth: number;
-  disableInteraction?: boolean;
-  disableSelection?: boolean;
+  clone?: boolean;
   ghost?: boolean;
-  handleProps?: ActionProps;
   indicator?: boolean;
+  childCount?: number;
+  node: FlattenedItem<T>;
   indentationWidth: number;
-  value: string;
-
-  onCollapse?(): void;
-
+  handleProps?: ActionProps;
+  disableSelection?: boolean;
+  disableInteraction?: boolean;
   onRemove?(): void;
-
+  onCollapse?(): void;
   wrapperRef?(node: HTMLDivElement): void;
+  renderContent?(node: FlattenedItem<T>): ReactNode;
 }
 
-export const TreeItem = forwardRef<HTMLDivElement, Props>(
+export const TreeItem = forwardRef<HTMLDivElement, Props<unknown>>(
   (
     {
+      node,
       ghost,
       clone,
       depth,
       style,
-      value,
-      onRemove,
       indicator,
-      collapsed,
       childCount,
-      wrapperRef,
-      onCollapse,
       handleProps,
       disableSelection,
       indentationWidth,
       disableInteraction,
+      onRemove,
+      onCollapse,
+      wrapperRef,
+      renderContent,
       ...props
     },
     ref
   ) => {
     return (
-      <div
+      <Wrapper
+        $depth={depth}
         ref={wrapperRef}
-        style={
-          {
-            "--spacing": `${indentationWidth * depth}px`,
-          } as React.CSSProperties
-        }
+        $indentationWidth={indentationWidth}
         {...props}
+        className={clsx([
+          "dnd-tree-item-wrapper",
+          {
+            "dnd-tree-item-ghost": ghost,
+            "dnd-tree-item-clone": clone,
+            "dnd-tree-item-indicator": indicator,
+            "dnd-tree-item-disable-selection": disableSelection,
+            "dnd-tree-item-disable-interaction": disableInteraction,
+          },
+          props.className,
+        ])}
       >
-        <div ref={ref} style={style}>
-          <Handle {...handleProps} />
-          {onCollapse && <Action onClick={onCollapse}>{collapseIcon}</Action>}
-          <span>{value}</span>
-          {!clone && onRemove && <Remove onClick={onRemove} />}
-          {clone && childCount && childCount > 1 ? <span>{childCount}</span> : null}
-        </div>
-      </div>
+        <Item className="dnd-tree-item" ref={ref} style={style}>
+          <ItemActions className="dnd-tree-item-actions">
+            <Handle className="dnd-tree-item-handle" {...handleProps} />
+            {onCollapse && (
+              <Action
+                onClick={onCollapse}
+                className={clsx([
+                  "dnd-tree-item-collapse",
+                  { "dnd-tree-item-collapsed": node.collapsed && node.children.length > 0 },
+                ])}
+              >
+                {collapseIcon}
+              </Action>
+            )}
+          </ItemActions>
+          <ItemContent className="dnd-tree-item-content">
+            {renderContent ? renderContent(node) : node.id}
+          </ItemContent>
+          {!clone && onRemove && <Remove className="dnd-tree-item-remove" onClick={onRemove} />}
+          {clone && childCount && childCount > 1 ? (
+            <ChildrenCount className="dnd-tree-item-count">{childCount}</ChildrenCount>
+          ) : null}
+        </Item>
+      </Wrapper>
     );
   }
 );
@@ -74,3 +98,152 @@ const collapseIcon = (
 );
 
 TreeItem.displayName = "TreeItem";
+
+const Wrapper = styled.div<{
+  $depth: number;
+  $indentationWidth: number;
+}>`
+  margin: 10px 0;
+  list-style: none;
+  box-sizing: border-box;
+  padding-left: ${({ $depth, $indentationWidth }) => $depth * $indentationWidth}px;
+
+  .dnd-tree-item-remove,
+  .dnd-tree-item-collapse,
+  .dnd-tree-item-handle {
+    svg {
+      fill: #777;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:hover svg {
+      fill: #000;
+    }
+  }
+
+  &.dnd-tree-item-clone {
+    display: inline-block;
+    pointer-events: none;
+    padding: 0;
+    padding-top: 20px;
+    padding-left: 25px;
+
+    .dnd-tree-item {
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 15px 15px 0 rgba(34, 33, 81, 0.1);
+    }
+  }
+
+  &.dnd-tree-item-ghost {
+    &.dnd-tree-item-indicator {
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+      margin-bottom: -1px;
+
+      .dnd-tree-item {
+        position: relative;
+        padding: 0;
+        height: 8px;
+        border-color: #2389ff;
+        background-color: #56a1f8;
+
+        &:before {
+          top: -4px;
+          left: -8px;
+          content: "";
+          width: 12px;
+          height: 12px;
+          display: block;
+          position: absolute;
+          border-radius: 50%;
+          border: 1px solid #2389ff;
+          background-color: #ffffff;
+        }
+
+        > * {
+          height: 0;
+          opacity: 0;
+        }
+      }
+    }
+
+    &:not(.dnd-tree-item-indicator) {
+      opacity: 0.5;
+      display: none;
+    }
+
+    .dnd-tree-item > * {
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
+
+  &.dnd-tree-item-disable-interaction {
+    pointer-events: none;
+  }
+
+  &.dnd-tree-item-cone,
+  &.dnd-tree-item-disable-selection {
+    .dnd-tree-item-text,
+    .dnd-tree-item-count {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  }
+
+  .dnd-tree-item-collapse {
+    svg {
+      transition: transform 250ms ease;
+    }
+
+    &.dnd-tree-item-collapsed svg {
+      transform: rotate(-90deg);
+    }
+  }
+`;
+
+const Item = styled.div`
+  display: flex;
+  position: relative;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: flex-start;
+
+  padding: 10px;
+
+  color: #222;
+  background-color: #fff;
+
+  border-radius: 5px;
+  border: 1px solid #dedede;
+`;
+
+const ItemActions = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ChildrenCount = styled.span`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #2389ff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+  font-size: 12px;
+`;
+
+const ItemContent = styled.span`
+  flex-grow: 1;
+  padding: 0 10px;
+`;

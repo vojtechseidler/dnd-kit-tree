@@ -1,21 +1,22 @@
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 import type { UniqueIdentifier } from "@dnd-kit/core";
 
-export interface TreeItem {
+export interface TreeItem<T = unknown> {
+  data?: T;
   id: UniqueIdentifier;
-  children: TreeItem[];
+  children: TreeItem<T>[];
   collapsed?: boolean;
 }
 
-export type TreeItems = TreeItem[];
+export type TreeItems<T> = TreeItem<T>[];
 
-export interface FlattenedItem extends TreeItem {
+export interface FlattenedItem<T> extends TreeItem<T> {
   parentId: UniqueIdentifier | null;
   depth: number;
   index: number;
 }
 
-export type SensorContext = MutableRefObject<{
-  items: FlattenedItem[];
+export type SensorContext = RefObject<{
+  items: FlattenedItem<unknown>[];
   offset: number;
 }>;

@@ -1,10 +1,10 @@
 import js from "@eslint/js";
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
 import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
+import tsParser from "@typescript-eslint/parser";
 import prettierPlugin from "eslint-plugin-prettier";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 
 export default [
   {
@@ -16,9 +16,10 @@ export default [
     languageOptions: {
       parser: tsParser,
       globals: {
-        "window": true,
-        "document": true,
-        "navigator": true,
+        window: true,
+        console: true,
+        document: true,
+        navigator: true,
       },
       parserOptions: {
         project: "./tsconfig.json",

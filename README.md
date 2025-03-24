@@ -6,7 +6,6 @@ A React-based project utilizing `dnd-kit` to create a customizable and interacti
 
 - Drag-and-drop support for tree nodes.
 - Customizable node rendering.
-- Keyboard accessibility.
 - Lightweight and performant.
 
 ## Installation
@@ -15,7 +14,7 @@ A React-based project utilizing `dnd-kit` to create a customizable and interacti
 npm install dnd-kit-tree
 ```
 
-## Usage
+## Example
 
 ```jsx
 import React from 'react';
@@ -33,12 +32,59 @@ const App = () => {
 export default App;
 ```
 
-## Props
+```jsx
+import { useState } from "react";
+import { SortableTree, TreeItems } from "dnd-kit-tree";
 
-| Prop       | Type     | Description                          |
-|------------|----------|--------------------------------------|
-| `data`     | `array`  | Array of tree nodes.                 |
-| `onDragEnd`| `func`   | Callback for drag-and-drop events.   |
+type Data = {
+  label: string;
+};
+
+const MyComponent = () => {
+  const [value, setValue] = useState<TreeItems<Data>>([
+    {
+      id: "id-1",
+      data: { label: "Item 1" },
+      children: [
+        {
+          id: "id-2",
+          data: { label: "Item 2" },
+          children: [
+            {
+              id: "id-3",
+              children: [],
+              data: { label: "Item 3" },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "id-4",
+      children: [],
+      data: { label: "Item 4" },
+    },
+    {
+      id: "id-5",
+      children: [],
+      data: { label: "Item 5" },
+    },
+  ]);
+
+  return (
+    <SortableTree
+      removable
+      collapsible
+      value={value}
+      onChange={setValue}
+      indentationWidth={25}
+      renderItemContent={(item) => (
+        <div>{item.data?.label}</div>
+      )}
+    />
+  );
+};
+```
 
 ## Contributing
 
