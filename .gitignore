@@ -1,0 +1,9 @@
+# App
+node_modules
+
+# IDE
+.idea
+.vscode
+
+# macOS
+.DS_Store

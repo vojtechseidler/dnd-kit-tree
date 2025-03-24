@@ -1,0 +1,11 @@
+{
+  "name": "dnd-kit-tree-workspace",
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.6.3",
+  "scripts": {
+    "build": "pnpm run --filter=dnd-kit-tree build",
+    "storybook:run": "pnpm run build && pnpm run --filter=storybook storybook",
+    "storybook:build": "pnpm run build && pnpm run --filter=storybook build-storybook"
+  }
+}
