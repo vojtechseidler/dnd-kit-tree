@@ -29,14 +29,6 @@ module.exports = [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
     ],
-    external: [
-      "react",
-      "react-dom",
-      "@dnd-kit/core",
-      "@dnd-kit/sortable",
-      "@dnd-kit/utilities",
-      "styled-components",
-    ],
   },
   {
     input,

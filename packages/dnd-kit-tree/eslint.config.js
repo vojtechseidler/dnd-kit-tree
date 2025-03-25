@@ -8,7 +8,7 @@ import reactHooksPlugin from "eslint-plugin-react-hooks";
 
 export default [
   {
-    ignores: ["dist", "node_modules", "rollup.config.cjs"],
+    ignores: ["dist", "node_modules"],
   },
   js.configs.recommended,
   {
