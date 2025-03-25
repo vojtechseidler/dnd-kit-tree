@@ -1,5 +1,8 @@
 # dnd-kit-tree
 
+![npm](https://img.shields.io/npm/v/dnd-kit-tree)
+![license](https://img.shields.io/npm/l/dnd-kit-tree)
+
 A React-based project utilizing `dnd-kit` to create a customizable and interactive tree component for drag-and-drop
 functionality.
 
@@ -9,9 +12,9 @@ functionality.
 - Customizable node rendering.
 - Lightweight and performant.
 
-![Example Image 1](./image-1.jpg)
+![Example Image 1](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-1.jpg)
 
-![Example Image 2](./image-2.jpg)
+![Example Image 2](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-2.jpg)
 
 ## Installation
 
