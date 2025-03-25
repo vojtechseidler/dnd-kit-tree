@@ -1,6 +1,7 @@
 # dnd-kit-tree
 
-A React-based project utilizing `dnd-kit` to create a customizable and interactive tree component for drag-and-drop functionality.
+A React-based project utilizing `dnd-kit` to create a customizable and interactive tree component for drag-and-drop
+functionality.
 
 ## Features
 
@@ -11,12 +12,12 @@ A React-based project utilizing `dnd-kit` to create a customizable and interacti
 ## Installation
 
 ```bash
-npm install dnd-kit-tree
+npm install styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities dnd-kit-tree
 ```
 
 ## Example
 
-```jsx
+```tsx
 import { useState } from "react";
 import { SortableTree, TreeItems } from "dnd-kit-tree";
 
@@ -62,15 +63,14 @@ const MyComponent = () => {
       value={value}
       onChange={setValue}
       indentationWidth={25}
-      renderItemContent={(item) => (
-        <div>{item.data?.label}</div>
-      )}
+      renderItemContent={(item) => <div>{item.data?.label}</div>}
     />
   );
 };
 ```
 
 ## Props
+
 | Prop                | Type                                     | Default     | Description                                                  |
 | ------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
 | `value`             | `TreeItems<T>`                           | `[]`        | The tree data structure representing the nodes.              |

@@ -1,6 +1,6 @@
 {
   "name": "dnd-kit-tree-workspace",
-  "author": "",
+  "author": "Vojtěch Seidler <mail@vojtech-seidler.cz>",
   "license": "MIT",
   "packageManager": "pnpm@10.6.3",
   "scripts": {

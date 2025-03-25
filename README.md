@@ -11,7 +11,7 @@ A React-based project utilizing `dnd-kit` to create a customizable and interacti
 ## Installation
 
 ```bash
-npm install dnd-kit-tree
+npm install styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities dnd-kit-tree
 ```
 
 ## Example

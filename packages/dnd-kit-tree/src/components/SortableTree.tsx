@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { CSS } from "@dnd-kit/utilities";
 import { useRef, useMemo, useState, useEffect, ReactNode } from "react";
@@ -24,7 +23,7 @@ import {
 
 import type { TreeItems, FlattenedItem, SensorContext } from "../types";
 
-import { SortableTreeItem } from "../components/TreeItem";
+import { SortableTreeItem } from "./TreeItem";
 import {
   buildTree,
   removeItem,
