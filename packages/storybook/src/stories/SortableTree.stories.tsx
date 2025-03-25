@@ -66,5 +66,5 @@ export const Default: Story = {
     collapsible: true,
     indentationWidth: 25,
   },
-  render: (props) => <div style={{ fontFamily: "Helvetica", fontSize: 14 }}><StoryHook {...props} /></div>,
+  render: (props) => <StoryHook {...props} />,
 };

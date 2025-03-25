@@ -12,6 +12,9 @@ functionality.
 - Customizable node rendering.
 - Lightweight and performant.
 
+## Demo
+[View Demo](https://vojtechseidler.github.io/dnd-kit-tree/?path=/story/stories-sortabletree--default)
+
 ![Example Image 1](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-1.jpg)
 
 ![Example Image 2](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-2.jpg)
