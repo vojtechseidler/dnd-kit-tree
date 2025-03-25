@@ -22,7 +22,7 @@ functionality.
 ## Installation
 
 ```bash
-npm install dnd-kit-tree styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+npm install dnd-kit-tree @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 ```
 
 ## Example
@@ -89,23 +89,6 @@ const MyComponent = () => {
 | `collapsible`       | `boolean`                                | `false`     | Enables the ability to collapse/expand tree nodes.           |
 | `indentationWidth`  | `number`                                 | `25`        | The width of indentation for child nodes in pixels.          |
 | `renderItemContent` | `(item: TreeItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
-
-## CSS Class Names
-
-- `dnd-tree-item-wrapper`
-- `dnd-tree-item-ghost`
-- `dnd-tree-item-clone`
-- `dnd-tree-item-indicator`
-- `dnd-tree-item-disable-selection`
-- `dnd-tree-item-disable-interaction`
-- `dnd-tree-item`
-- `dnd-tree-item-actions`
-- `dnd-tree-item-handle`
-- `dnd-tree-item-collapse`
-- `dnd-tree-item-collapsed`
-- `dnd-tree-item-content`
-- `dnd-tree-item-remove`
-- `dnd-tree-item-count`
 
 ## Contributing
 

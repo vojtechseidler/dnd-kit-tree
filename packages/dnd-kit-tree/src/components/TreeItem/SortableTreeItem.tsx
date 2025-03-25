@@ -36,10 +36,10 @@ export function SortableTreeItem<T>({ node, renderItemContent, ...props }: Props
     <TreeItem
       node={node}
       style={style}
-      ghost={isDragging}
+      isSorting={isSorting}
+      isDragging={isDragging}
       disableSelection={iOS}
       ref={setDraggableNodeRef}
-      disableInteraction={isSorting}
       wrapperRef={setDroppableNodeRef}
       renderContent={renderItemContent}
       handleProps={{
