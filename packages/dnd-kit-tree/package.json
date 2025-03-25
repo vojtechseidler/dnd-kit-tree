@@ -17,10 +17,10 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "../../LICENCE",
-    "../../README.md",
-    "../../image-1.jpg",
-    "../../image-2.jpg"
+    "LICENCE",
+    "README.md",
+    "image-1.jpg",
+    "image-2.jpg"
   ],
   "type": "module",
   "scripts": {
