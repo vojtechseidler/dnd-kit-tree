@@ -129,7 +129,7 @@ const Wrapper = styled.div<{
     .dnd-tree-item {
       padding: 10px;
       border-radius: 5px;
-      box-shadow: 0px 15px 15px 0 rgba(34, 33, 81, 0.1);
+      box-shadow: 0 15px 15px 0 rgba(34, 33, 81, 0.1);
     }
   }
 
