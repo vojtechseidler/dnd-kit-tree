@@ -124,9 +124,7 @@ const Wrapper = styled.div<{
   &.dnd-tree-item-clone {
     display: inline-block;
     pointer-events: none;
-    padding: 0;
-    padding-top: 20px;
-    padding-left: 25px;
+    padding: 20px 0 0 25px;
 
     .dnd-tree-item {
       padding: 10px;
@@ -148,19 +146,6 @@ const Wrapper = styled.div<{
         height: 8px;
         border-color: #2389ff;
         background-color: #56a1f8;
-
-        &:before {
-          top: -4px;
-          left: -8px;
-          content: "";
-          width: 12px;
-          height: 12px;
-          display: block;
-          position: absolute;
-          border-radius: 50%;
-          border: 1px solid #2389ff;
-          background-color: #ffffff;
-        }
 
         > * {
           height: 0;
@@ -236,7 +221,6 @@ const ChildrenCount = styled.span`
   height: 24px;
   border-radius: 50%;
   background-color: #2389ff;
-  font-size: 0.8rem;
   font-weight: 600;
   color: #fff;
   line-height: 1;
