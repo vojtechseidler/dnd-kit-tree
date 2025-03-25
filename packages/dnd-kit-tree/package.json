@@ -10,15 +10,17 @@
     "drag-and-drop"
   ],
   "license": "MIT",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "packageManager": "pnpm@10.6.3",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "LICENSE",
-    "README.md"
+    "../../LICENCE",
+    "../../README.md",
+    "../../image-1.jpg",
+    "../../image-2.jpg"
   ],
   "type": "module",
   "scripts": {

@@ -1,6 +1,7 @@
 # dnd-kit-tree
 
-A React-based project utilizing `dnd-kit` to create a customizable and interactive tree component for drag-and-drop functionality.
+A React-based project utilizing `dnd-kit` to create a customizable and interactive tree component for drag-and-drop
+functionality.
 
 ## Features
 
@@ -8,10 +9,14 @@ A React-based project utilizing `dnd-kit` to create a customizable and interacti
 - Customizable node rendering.
 - Lightweight and performant.
 
+![Example Image 1](./image-1.jpg)
+
+![Example Image 2](./image-2.jpg)
+
 ## Installation
 
 ```bash
-npm install styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities dnd-kit-tree
+npm install dnd-kit-tree styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 ```
 
 ## Example
@@ -62,15 +67,14 @@ const MyComponent = () => {
       value={value}
       onChange={setValue}
       indentationWidth={25}
-      renderItemContent={(item) => (
-        <div>{item.data?.label}</div>
-      )}
+      renderItemContent={(item) => <div>{item.data?.label}</div>}
     />
   );
 };
 ```
 
 ## Props
+
 | Prop                | Type                                     | Default     | Description                                                  |
 | ------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
 | `value`             | `TreeItems<T>`                           | `[]`        | The tree data structure representing the nodes.              |
@@ -79,6 +83,23 @@ const MyComponent = () => {
 | `collapsible`       | `boolean`                                | `false`     | Enables the ability to collapse/expand tree nodes.           |
 | `indentationWidth`  | `number`                                 | `25`        | The width of indentation for child nodes in pixels.          |
 | `renderItemContent` | `(item: TreeItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
+
+## CSS Class Names
+
+- `dnd-tree-item-wrapper`
+- `dnd-tree-item-ghost`
+- `dnd-tree-item-clone`
+- `dnd-tree-item-indicator`
+- `dnd-tree-item-disable-selection`
+- `dnd-tree-item-disable-interaction`
+- `dnd-tree-item`
+- `dnd-tree-item-actions`
+- `dnd-tree-item-handle`
+- `dnd-tree-item-collapse`
+- `dnd-tree-item-collapsed`
+- `dnd-tree-item-content`
+- `dnd-tree-item-remove`
+- `dnd-tree-item-count`
 
 ## Contributing
 

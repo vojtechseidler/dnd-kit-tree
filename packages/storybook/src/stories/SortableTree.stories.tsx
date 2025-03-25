@@ -20,16 +20,16 @@ const StoryHook = (props: SortableTreeProps<unknown>) => {
   const [value, setValue] = useState<TreeItems<Data>>([
     {
       id: "id-1",
-      data: { label: "Item 1" },
+      data: { label: "Root Item 1" },
       children: [
         {
           id: "id-2",
-          data: { label: "Item 2" },
+          data: { label: "Sub Item 2" },
           children: [
             {
               id: "id-3",
               children: [],
-              data: { label: "Item 3" },
+              data: { label: "Sub Item 3" },
             },
           ],
         },
@@ -38,12 +38,12 @@ const StoryHook = (props: SortableTreeProps<unknown>) => {
     {
       id: "id-4",
       children: [],
-      data: { label: "Item 4" },
+      data: { label: "Root Item 2" },
     },
     {
       id: "id-5",
       children: [],
-      data: { label: "Item 5" },
+      data: { label: "Root Item 3" },
     },
   ]);
   return (
@@ -66,5 +66,5 @@ export const Default: Story = {
     collapsible: true,
     indentationWidth: 25,
   },
-  render: (props) => <StoryHook {...props} />,
+  render: (props) => <div style={{ fontFamily: "Helvetica", fontSize: 14 }}><StoryHook {...props} /></div>,
 };
