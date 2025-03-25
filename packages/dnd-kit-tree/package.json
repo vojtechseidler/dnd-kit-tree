@@ -1,6 +1,6 @@
 {
   "name": "dnd-kit-tree",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Vojtěch Seidler <mail@vojtech-seidler.cz>",
   "description": "A sortable tree component for React",
   "repository": "https://github.com/vojtechseidler/dnd-kit-tree",
@@ -18,7 +18,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "LICENCE",
+    "LICENSE",
     "README.md"
   ],
   "type": "module",
