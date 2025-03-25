@@ -16,7 +16,7 @@ npm install styled-components @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 ## Example
 
-```jsx
+```tsx
 import { useState } from "react";
 import { SortableTree, TreeItems } from "dnd-kit-tree";
 
