@@ -21,7 +21,7 @@ import {
   defaultDropAnimation,
 } from "@dnd-kit/core";
 
-import type { TreeItems, FlattenedItem, SensorContext } from "../types";
+import type { TreeItems, FlattenedItem, SensorContext, RenderItemProps } from "../types";
 
 import { SortableTreeItem } from "./TreeItem";
 import {
@@ -70,6 +70,7 @@ export interface SortableTreeProps<T> {
   adjustTranslateY?: number;
   indentationWidth?: number;
   onChange?: (items: TreeItems<T>) => void;
+  renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
 }
 
@@ -80,6 +81,7 @@ export function SortableTree<T>({
   indentationWidth = 50,
   adjustTranslateY = -25,
   onChange,
+  renderItem,
   renderItemContent = (item) => <div>{item.id}</div>,
 }: SortableTreeProps<T>) {
   const indicator = true;
@@ -295,6 +297,7 @@ export function SortableTree<T>({
             node={node}
             key={node.id}
             indicator={indicator}
+            renderItem={renderItem}
             renderContent={renderItemContent}
             indentationWidth={indentationWidth}
             onRemove={removable ? () => handleRemove(node.id) : undefined}
@@ -314,6 +317,7 @@ export function SortableTree<T>({
                 clone
                 depth={0}
                 node={activeItem}
+                renderItem={renderItem}
                 indentationWidth={indentationWidth}
                 childCount={getChildCount(value, activeNode?.id) + 1}
                 renderItemContent={renderItemContent}

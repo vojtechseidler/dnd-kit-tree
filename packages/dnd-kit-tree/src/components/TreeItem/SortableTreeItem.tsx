@@ -3,17 +3,18 @@ import { CSSProperties, ReactNode } from "react";
 import { useSortable, AnimateLayoutChanges } from "@dnd-kit/sortable";
 
 import { iOS } from "../../utilities";
-import { FlattenedItem } from "../../types";
+import { FlattenedItem, RenderItemProps } from "../../types";
 import { TreeItem, Props as TreeItemProps } from "./TreeItem";
 
 interface Props<T> extends TreeItemProps<T> {
+  renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
 }
 
 const animateLayoutChanges: AnimateLayoutChanges = ({ isSorting, wasDragging }) =>
   !(isSorting || wasDragging);
 
-export function SortableTreeItem<T>({ node, renderItemContent, ...props }: Props<T>) {
+export function SortableTreeItem<T>({ node, renderItem, renderItemContent, ...props }: Props<T>) {
   const {
     isSorting,
     listeners,
@@ -39,6 +40,7 @@ export function SortableTreeItem<T>({ node, renderItemContent, ...props }: Props
       isSorting={isSorting}
       isDragging={isDragging}
       disableSelection={iOS}
+      renderItem={renderItem}
       ref={setDraggableNodeRef}
       wrapperRef={setDroppableNodeRef}
       renderContent={renderItemContent}

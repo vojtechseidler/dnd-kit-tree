@@ -13,11 +13,12 @@ functionality.
 - Lightweight and performant.
 
 ## Demo
+
 [View Demo](https://vojtechseidler.github.io/dnd-kit-tree/?path=/story/stories-sortabletree--default)
 
-![Example Image 1](./image-1.jpg)
+![Example Image 1](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-1.jpg)
 
-![Example Image 2](./image-2.jpg)
+![Example Image 2](https://raw.githubusercontent.com/vojtechseidler/dnd-kit-tree/refs/heads/main/image-2.jpg)
 
 ## Installation
 
@@ -88,7 +89,7 @@ const MyComponent = () => {
 | `removable`         | `boolean`                                | `false`     | Enables the ability to remove tree nodes.                    |
 | `collapsible`       | `boolean`                                | `false`     | Enables the ability to collapse/expand tree nodes.           |
 | `indentationWidth`  | `number`                                 | `25`        | The width of indentation for child nodes in pixels.          |
-| `renderItemContent` | `(item: TreeItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
+| `renderItemContent` | `(item: FlattenedItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
 
 ## CSS Class Names
 
@@ -105,6 +106,7 @@ const MyComponent = () => {
 - `dnd-tree-item-action-collapse`
 - `dnd-tree-item-action-collapsed`
 - `dnd-tree-item-action-delete`
+
 
 ## Contributing
 

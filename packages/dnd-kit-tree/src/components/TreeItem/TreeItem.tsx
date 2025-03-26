@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import { CSSProperties, forwardRef, HTMLAttributes, ReactNode } from "react";
 
-import { FlattenedItem } from "../../types";
 import type { ActionProps } from "./components";
+import type { FlattenedItem, RenderItemProps } from "../../types";
+
 import { Action, Remove, Handle } from "./components";
 
 import styles from "../../styles/DndKitTree.module.css";
@@ -18,6 +19,7 @@ export interface Props<T> extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
   indentationWidth: number;
   handleProps?: ActionProps;
   disableSelection?: boolean;
+  renderItem?: (props: RenderItemProps<T>) => ReactNode;
 
   onRemove?(): void;
 
@@ -28,7 +30,8 @@ export interface Props<T> extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
   renderContent?(node: FlattenedItem<T>): ReactNode;
 }
 
-export const TreeItem = forwardRef<HTMLDivElement, Props<unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
   (
     {
       node,
@@ -45,11 +48,31 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<unknown>>(
       onRemove,
       onCollapse,
       wrapperRef,
+      renderItem,
       renderContent,
       ...props
     },
     ref
   ) => {
+    if (renderItem) {
+      return renderItem({
+        node,
+        depth,
+        clone: !!clone,
+        containerRef: ref,
+        containerStyle: style,
+        wrapperRef: wrapperRef,
+        isSorting: !!isSorting,
+        idRemovable: !!onRemove,
+        isDragging: !!isDragging,
+        handleProps: handleProps,
+        childCount: childCount || 0,
+        isCollapsible: !!onCollapse,
+        onRemove: onRemove || (() => {}),
+        onCollapse: onCollapse || (() => {}),
+      });
+    }
+
     return (
       <div
         ref={wrapperRef}

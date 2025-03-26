@@ -1,0 +1,98 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Example - Basic" />
+
+<div className="sb-container">
+  <div className='sb-section-title'>
+    # Example - Basic
+  </div>
+  <div className="sb-section">
+    <div className="sb-section-content">
+      ```tsx
+      import { useState } from "react";
+      import { SortableTree } from 'dnd-kit-tree';
+      import type { TreeItems } from "dnd-kit-tree";
+
+      type Data = {
+        label: string;
+      };
+
+      const MyComponent = () => {
+        const [value, setValue] = useState<TreeItems<Data>>([
+          {
+            id: "id-1",
+            data: { label: "Root Item 1" },
+            children: [
+              {
+                id: "id-2",
+                data: { label: "Sub Item 2" },
+                children: [
+                  {
+                    id: "id-3",
+                    children: [],
+                    data: { label: "Sub Item 3" },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "id-4",
+            children: [],
+            data: { label: "Root Item 2" },
+          },
+          {
+            id: "id-5",
+            children: [],
+            data: { label: "Root Item 3" },
+          },
+        ]);
+
+        return (
+          <SortableTree
+            removable
+            collapsible
+            value={value}
+            onChange={setValue}
+            indentationWidth={25}
+            renderItemContent={(item) => (
+                <div>{item.data?.label}</div>
+            )}
+          />
+        );
+      };
+      ```
+    </div>
+  </div>
+</div>
+
+<style>
+  {`
+  .sb-container {
+    margin-bottom: 48px;
+  }
+
+  .sb-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .sb-section-content {
+    width: 100%;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  .sb-section-title {
+    margin-bottom: 0px;
+  }
+
+  .sb-section a:not(h1 a, h2 a, h3 a) {
+    font-size: 14px;
+  }
+  `}
+</style>
