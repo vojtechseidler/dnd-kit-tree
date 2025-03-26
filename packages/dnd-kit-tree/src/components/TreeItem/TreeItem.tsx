@@ -57,12 +57,14 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<unknown>>(
         style={{ "--padding": `${depth * indentationWidth}px` } as CSSProperties}
         className={clsx([
           styles.item,
-          indicator && styles.itemIndicator,
           isDragging && styles.itemDragging,
           isDragging && indicator && styles.itemDraggingIndicator,
           isDragging && isSorting && styles.itemGhostSorting,
           disableSelection && styles.itemDisableSelection,
           clone && styles.itemClone,
+          "dnd-tree-item",
+          clone && "dnd-tree-item-clone",
+          isDragging && indicator && "dnd-tree-item-indicator",
           props.className,
         ])}
       >
@@ -72,27 +74,38 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<unknown>>(
           className={clsx(
             styles.itemContainer,
             isDragging && indicator && styles.itemContainerGhostIndicator,
-            clone && styles.itemContainerClone
+            clone && styles.itemContainerClone,
+            "dnd-tree-item-container",
+            clone && "dnd-tree-item-container-clone",
+            isDragging && indicator && "dnd-tree-item-container-indicator"
           )}
         >
-          <div className={styles.itemActions}>
-            <Handle className="dnd-tree-item-handle" {...handleProps} />
+          <div className={clsx(styles.itemActions, "dnd-tree-item-actions")}>
+            <Handle className="dnd-tree-item-action-handle" {...handleProps} />
             {onCollapse && (
               <Action
                 onClick={onCollapse}
                 className={clsx([
                   styles.itemActionCollapse,
                   node.collapsed && node.children.length > 0 && styles.itemActionCollapsed,
+                  "dnd-tree-item-action-collapse",
+                  node.collapsed && node.children.length > 0 && "dnd-tree-item-action-collapsed",
                 ])}
               >
                 {collapseIcon}
               </Action>
             )}
           </div>
-          <div className={styles.itemContent}>{renderContent ? renderContent(node) : node.id}</div>
-          {!clone && onRemove && <Remove onClick={onRemove} />}
+          <div className={clsx(styles.itemContent, "dnd-tree-item-content")}>
+            {renderContent ? renderContent(node) : node.id}
+          </div>
+          {!clone && onRemove && (
+            <Remove className="dnd-tree-item-action-delete" onClick={onRemove} />
+          )}
           {clone && childCount && childCount > 1 ? (
-            <div className={styles.itemChildrenCount}>{childCount}</div>
+            <div className={clsx(styles.itemChildrenCount, "dnd-tree-item-children-count")}>
+              {childCount}
+            </div>
           ) : null}
         </div>
       </div>

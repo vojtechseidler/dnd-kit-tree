@@ -90,6 +90,22 @@ const MyComponent = () => {
 | `indentationWidth`  | `number`                                 | `25`        | The width of indentation for child nodes in pixels.          |
 | `renderItemContent` | `(item: TreeItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
 
+## CSS Class Names
+
+- `dnd-tree-item`
+- `dnd-tree-item-clone`
+- `dnd-tree-item-indicator`
+- `dnd-tree-item-container`
+- `dnd-tree-item-container-clone`
+- `dnd-tree-item-container-indicator`
+- `dnd-tree-item-content`
+- `dnd-tree-item-children-count`
+- `dnd-tree-item-actions`
+- `dnd-tree-item-action-handle`
+- `dnd-tree-item-action-collapse`
+- `dnd-tree-item-action-collapsed`
+- `dnd-tree-item-action-delete`
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
