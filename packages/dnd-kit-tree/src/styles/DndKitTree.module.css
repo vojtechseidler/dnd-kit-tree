@@ -3,10 +3,6 @@
     list-style: none;
     box-sizing: border-box;
     padding-left: var(--padding);
-
-    &.dndTreeItemGhost {
-        display: none !important;
-    }
 }
 
 .itemContent {
