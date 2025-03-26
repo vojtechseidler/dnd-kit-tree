@@ -82,14 +82,16 @@ const MyComponent = () => {
 
 ## Props
 
-| Prop                | Type                                     | Default     | Description                                                  |
-| ------------------- | ---------------------------------------- | ----------- | ------------------------------------------------------------ |
-| `value`             | `TreeItems<T>`                           | `[]`        | The tree data structure representing the nodes.              |
-| `onChange`          | `(items: TreeItems<T>) => void`          | `undefined` | Callback function triggered when the tree structure changes. |
-| `removable`         | `boolean`                                | `false`     | Enables the ability to remove tree nodes.                    |
-| `collapsible`       | `boolean`                                | `false`     | Enables the ability to collapse/expand tree nodes.           |
-| `indentationWidth`  | `number`                                 | `25`        | The width of indentation for child nodes in pixels.          |
-| `renderItemContent` | `(item: FlattenedItem<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree node content.    |
+| Prop                | Type                                             | Default     | Description                                                  |
+| ------------------- | ------------------------------------------------ | ----------- | ------------------------------------------------------------ |
+| `value`             | `TreeItems<T>`                                   | `[]`        | The tree data structure representing the nodes.              |
+| `onChange`          | `(items: TreeItems<T>) => void`                  | `undefined` | Callback function triggered when the tree structure changes. |
+| `removable`         | `boolean`                                        | `false`     | Enables the ability to remove tree nodes.                    |
+| `collapsible`       | `boolean`                                        | `false`     | Enables the ability to collapse/expand tree nodes.           |
+| `indentationWidth`  | `number`                                         | `25`        | The width of indentation for child nodes in pixels.          |
+| `adjustTranslateY`  | `number`                                         | `0`         | Adjusts the vertical position of the dragged node.           |
+| `renderItem`        | `(props: RenderItemProps<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree nodes.           |
+| `renderItemContent` | `(item: FlattenedItem<T>) => React.ReactNode`    | `undefined` | Function to customize the rendering of tree node content.    |
 
 ## CSS Class Names
 
@@ -106,7 +108,6 @@ const MyComponent = () => {
 - `dnd-tree-item-action-collapse`
 - `dnd-tree-item-action-collapsed`
 - `dnd-tree-item-action-delete`
-
 
 ## Contributing
 
