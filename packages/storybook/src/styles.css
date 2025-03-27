@@ -8,10 +8,7 @@
       "Courier New", monospace;
     --color-blue-500: oklch(0.623 0.214 259.815);
     --color-gray-100: oklch(0.967 0.003 264.542);
-    --color-gray-200: oklch(0.928 0.006 264.531);
     --color-gray-300: oklch(0.872 0.01 258.338);
-    --color-gray-400: oklch(0.707 0.022 261.325);
-    --color-gray-500: oklch(0.551 0.027 264.364);
     --color-gray-800: oklch(0.278 0.033 256.848);
     --color-gray-900: oklch(0.21 0.034 264.665);
     --color-white: #fff;
@@ -186,9 +183,6 @@
   .my-2 {
     margin-block: calc(var(--spacing) * 2);
   }
-  .my-4 {
-    margin-block: calc(var(--spacing) * 4);
-  }
   .flex {
     display: flex;
   }
@@ -198,14 +192,11 @@
   .h-\[25px\] {
     height: 25px;
   }
-  .h-\[40px\] {
-    height: 40px;
-  }
   .h-\[45px\] {
     height: 45px;
   }
-  .h-\[50px\] {
-    height: 50px;
+  .h-\[55px\] {
+    height: 55px;
   }
   .w-\[25px\] {
     width: 25px;
@@ -228,23 +219,8 @@
   .justify-center {
     justify-content: center;
   }
-  .gap-0 {
-    gap: calc(var(--spacing) * 0);
-  }
-  .gap-1 {
-    gap: calc(var(--spacing) * 1);
-  }
-  .gap-2 {
-    gap: calc(var(--spacing) * 2);
-  }
   .gap-3 {
     gap: calc(var(--spacing) * 3);
-  }
-  .gap-4 {
-    gap: calc(var(--spacing) * 4);
-  }
-  .gap-\[80px\] {
-    gap: 80px;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -260,29 +236,14 @@
     --tw-border-style: dashed;
     border-style: dashed;
   }
-  .border-gray-200 {
-    border-color: var(--color-gray-200);
-  }
   .border-gray-300 {
     border-color: var(--color-gray-300);
-  }
-  .border-gray-400 {
-    border-color: var(--color-gray-400);
   }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
   }
-  .bg-gray-500 {
-    background-color: var(--color-gray-500);
-  }
-  .bg-gray-800 {
-    background-color: var(--color-gray-800);
-  }
   .bg-gray-800\/10 {
     background-color: color-mix(in oklab, var(--color-gray-800) 10%, transparent);
-  }
-  .bg-gray-800\/50 {
-    background-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
   }
   .bg-white {
     background-color: var(--color-white);
@@ -296,14 +257,8 @@
   .p-3 {
     padding: calc(var(--spacing) * 3);
   }
-  .p-4 {
-    padding: calc(var(--spacing) * 4);
-  }
-  .px-2 {
-    padding-inline: calc(var(--spacing) * 2);
-  }
-  .pt-\[300px\] {
-    padding-top: 300px;
+  .px-3 {
+    padding-inline: calc(var(--spacing) * 3);
   }
   .text-white {
     color: var(--color-white);

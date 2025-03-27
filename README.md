@@ -85,11 +85,13 @@ const MyComponent = () => {
 | Prop                | Type                                             | Default     | Description                                                  |
 | ------------------- | ------------------------------------------------ | ----------- | ------------------------------------------------------------ |
 | `value`             | `TreeItems<T>`                                   | `[]`        | The tree data structure representing the nodes.              |
+| `maxDepth`          | `number`                                         | `undefined` | The maximum depth of the tree. (undefined = Infinity)        |
 | `onChange`          | `(items: TreeItems<T>) => void`                  | `undefined` | Callback function triggered when the tree structure changes. |
 | `removable`         | `boolean`                                        | `false`     | Enables the ability to remove tree nodes.                    |
 | `collapsible`       | `boolean`                                        | `false`     | Enables the ability to collapse/expand tree nodes.           |
 | `indentationWidth`  | `number`                                         | `25`        | The width of indentation for child nodes in pixels.          |
 | `adjustTranslateY`  | `number`                                         | `0`         | Adjusts the vertical position of the dragged node.           |
+| `virtual`           | `SortableTreeVirtualProps`                       | `undefined` | Enables virtualization of the tree.                          |
 | `renderItem`        | `(props: RenderItemProps<T>) => React.ReactNode` | `undefined` | Function to customize the rendering of tree nodes.           |
 | `renderItemContent` | `(item: FlattenedItem<T>) => React.ReactNode`    | `undefined` | Function to customize the rendering of tree node content.    |
 

@@ -19,9 +19,9 @@ export function SortableTreeItem<T>({ node, renderItem, renderItemContent, ...pr
     isSorting,
     listeners,
     transform,
+    isDragging,
     transition,
     attributes,
-    isDragging,
     setDraggableNodeRef,
     setDroppableNodeRef,
   } = useSortable({

@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
 import { CSS } from "@dnd-kit/utilities";
 import { useRef, useMemo, useState, useEffect, ReactNode } from "react";
+import VirtualList from "react-tiny-virtual-list";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import {
   Modifier,
@@ -63,6 +64,11 @@ const dropAnimationConfig: DropAnimation = {
   },
 };
 
+export interface SortableTreeVirtualProps {
+  height: number;
+  itemSize: number;
+}
+
 export interface SortableTreeProps<T> {
   maxDepth?: number;
   removable?: boolean;
@@ -70,6 +76,7 @@ export interface SortableTreeProps<T> {
   collapsible?: boolean;
   adjustTranslateY?: number;
   indentationWidth?: number;
+  virtual?: SortableTreeVirtualProps;
   onChange?: (items: TreeItems<T>) => void;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
@@ -77,6 +84,7 @@ export interface SortableTreeProps<T> {
 
 export function SortableTree<T>({
   value,
+  virtual,
   maxDepth,
   removable,
   collapsible,
@@ -121,7 +129,6 @@ export function SortableTree<T>({
 
   const sensors = useSensors(useSensor(PointerSensor));
   const sortedIds = useMemo(() => flattenedItems.map(({ id }) => id), [flattenedItems]);
-  const activeItem = activeNode?.id ? flattenedItems.find(({ id }) => id === activeNode.id) : null;
 
   useEffect(() => {
     sensorContext.current = {
@@ -284,6 +291,20 @@ export function SortableTree<T>({
     };
   };
 
+  const renderSortableItem = (node: FlattenedItem<T>) => (
+    <SortableTreeItem
+      node={node}
+      key={node.id}
+      indicator={indicator}
+      renderItem={renderItem}
+      renderContent={renderItemContent}
+      indentationWidth={indentationWidth}
+      onRemove={removable ? () => handleRemove(node.id) : undefined}
+      depth={node.id === activeNode?.id && projected ? projected.depth : node.depth}
+      onCollapse={collapsible && node.children.length ? () => handleCollapse(node.id) : undefined}
+    />
+  );
+
   return (
     <DndContext
       sensors={sensors}
@@ -297,31 +318,35 @@ export function SortableTree<T>({
       collisionDetection={closestCenter}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map((node) => (
-          <SortableTreeItem
-            node={node}
-            key={node.id}
-            indicator={indicator}
-            renderItem={renderItem}
-            renderContent={renderItemContent}
-            indentationWidth={indentationWidth}
-            onRemove={removable ? () => handleRemove(node.id) : undefined}
-            depth={node.id === activeNode?.id && projected ? projected.depth : node.depth}
-            onCollapse={
-              collapsible && node.children.length ? () => handleCollapse(node.id) : undefined
+        {virtual ? (
+          <VirtualList
+            {...virtual}
+            itemCount={flattenedItems.length}
+            stickyIndices={
+              activeNode ? [flattenedItems.findIndex(({ id }) => id === activeNode.id)] : undefined
             }
+            renderItem={({ index, style }) => {
+              const node = flattenedItems[index];
+              return (
+                <div key={index} style={{ ...style, position: "absolute" }}>
+                  {renderSortableItem(node)}
+                </div>
+              );
+            }}
           />
-        ))}
+        ) : (
+          flattenedItems.map((node) => renderSortableItem(node))
+        )}
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
             modifiers={indicator ? [adjustTranslate] : undefined}
           >
-            {activeNode?.id && activeItem ? (
+            {activeNode?.id && activeNode ? (
               <SortableTreeItem
                 clone
                 depth={0}
-                node={activeItem}
+                node={activeNode}
                 renderItem={renderItem}
                 indentationWidth={indentationWidth}
                 childCount={getChildCount(value, activeNode?.id) + 1}
