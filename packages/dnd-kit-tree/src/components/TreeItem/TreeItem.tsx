@@ -63,7 +63,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
         containerStyle: style,
         wrapperRef: wrapperRef,
         isSorting: !!isSorting,
-        idRemovable: !!onRemove,
+        isRemovable: !!onRemove,
         isDragging: !!isDragging,
         handleProps: handleProps,
         childCount: childCount || 0,

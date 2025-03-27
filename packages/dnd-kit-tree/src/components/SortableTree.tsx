@@ -64,6 +64,7 @@ const dropAnimationConfig: DropAnimation = {
 };
 
 export interface SortableTreeProps<T> {
+  maxDepth?: number;
   removable?: boolean;
   value: TreeItems<T>;
   collapsible?: boolean;
@@ -76,6 +77,7 @@ export interface SortableTreeProps<T> {
 
 export function SortableTree<T>({
   value,
+  maxDepth,
   removable,
   collapsible,
   indentationWidth = 50,
@@ -109,7 +111,7 @@ export function SortableTree<T>({
 
   const projected =
     activeNode?.id && overId
-      ? getProjection(flattenedItems, activeNode.id, overId, offsetLeft, indentationWidth)
+      ? getProjection(flattenedItems, activeNode.id, overId, offsetLeft, indentationWidth, maxDepth)
       : null;
 
   const sensorContext: SensorContext = useRef({
@@ -247,8 +249,11 @@ export function SortableTree<T>({
       const nestedVerb = eventName === "onDragEnd" ? "dropped" : "nested";
 
       if (!previousItem) {
-        const nextItem = sortedItems[overIndex + 1];
-        announcement = `${activeId} was ${movedVerb} before ${nextItem.id}.`;
+        const nextItem = sortedItems.length > 1 ? sortedItems[overIndex + 1] : undefined;
+        announcement =
+          nextItem !== undefined
+            ? `${activeId} was ${movedVerb} before ${nextItem.id}.`
+            : `Cannot move ${activeId}.`;
       } else {
         if (projected.depth > previousItem.depth) {
           announcement = `${activeId} was ${nestedVerb} under ${previousItem.id}.`;

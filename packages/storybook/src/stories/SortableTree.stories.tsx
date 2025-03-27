@@ -102,6 +102,7 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
   return (
     <SortableTree
       {...props}
+      maxDepth={2}
       value={value}
       onChange={setValue}
       adjustTranslateY={-20}
@@ -200,7 +201,7 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
                   }}>
                     {itemProps.node.data?.label}
                   </div>
-                  {itemProps.idRemovable && (
+                  {itemProps.isRemovable && (
                     <div>
                       <button
                         onClick={() => {

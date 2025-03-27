@@ -28,7 +28,7 @@ export interface RenderItemProps<T> {
   childCount: number;
   isSorting: boolean;
   isDragging: boolean;
-  idRemovable: boolean;
+  isRemovable: boolean;
   isCollapsible: boolean;
   containerStyle?: CSSProperties;
   wrapperRef?: (node: HTMLDivElement) => void;

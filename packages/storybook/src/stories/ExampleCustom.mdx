@@ -52,6 +52,7 @@ import { Meta } from "@storybook/blocks";
           <SortableTree
             removable
             collapsible
+            maxDepth={2}
             value={value}
             onChange={setValue}
             indentationWidth={25}
@@ -152,7 +153,7 @@ import { Meta } from "@storybook/blocks";
                         }}>
                           {itemProps.node.data?.label}
                         </div>
-                        {itemProps.idRemovable && (
+                        {itemProps.isRemovable && (
                           <div>
                             <button
                               onClick={() => {
