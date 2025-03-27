@@ -2,119 +2,81 @@ import { Meta } from "@storybook/blocks";
 
 <Meta title="Getting Started" />
 
-<div className="sb-container">
-  <div className='sb-section-title'>
-    # Getting Started
-  </div>
-  <div className="sb-section">
-    <div className="sb-section-content">
-      ## Installation
+# Getting Started
 
-      ```sh
-      npm install dnd-kit-tree @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
-      ```
+## Installation
 
-      ## Example
+```sh
+npm install dnd-kit-tree @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+```
 
-      ```tsx
-      import { useState } from "react";
-      import { SortableTree, TreeItems } from "dnd-kit-tree";
+## Example
 
-      type Data = {
-        label: string;
-      };
+```tsx
+import { useState } from "react";
+import { SortableTree, TreeItems } from "dnd-kit-tree";
 
-      const MyComponent = () => {
-        const [value, setValue] = useState<TreeItems<Data>>([
-          {
-            id: "id-1",
-            data: { label: "Item 1" },
-            children: [
-              {
-                id: "id-2",
-                data: { label: "Item 2" },
-                children: [
-                  {
-                    id: "id-3",
-                    children: [],
-                    data: { label: "Item 3" },
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            id: "id-4",
-            children: [],
-            data: { label: "Item 4" },
-          },
-          {
-            id: "id-5",
-            children: [],
-            data: { label: "Item 5" },
-          },
-        ]);
+type Data = {
+  label: string;
+};
 
-        return (
-          <SortableTree
-            removable
-            collapsible
-            value={value}
-            onChange={setValue}
-            indentationWidth={25}
-            renderItemContent={(item) => (
-              <div>{item.data?.label}</div>
-            )}
-          />
-        );
-      };
-      ```
+const MyComponent = () => {
+  const [value, setValue] = useState<TreeItems<Data>>([
+    {
+      id: "id-1",
+      data: { label: "Item 1" },
+      children: [
+        {
+          id: "id-2",
+          data: { label: "Item 2" },
+          children: [
+            {
+              id: "id-3",
+              children: [],
+              data: { label: "Item 3" },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "id-4",
+      children: [],
+      data: { label: "Item 4" },
+    },
+    {
+      id: "id-5",
+      children: [],
+      data: { label: "Item 5" },
+    },
+  ]);
 
-      ## CSS Class Names
+  return (
+    <SortableTree
+      removable
+      collapsible
+      value={value}
+      onChange={setValue}
+      indentationWidth={25}
+      renderItemContent={(item) => (
+        <div>{item.data?.label}</div>
+      )}
+    />
+  );
+};
+```
 
-      - `dnd-tree-item`
-      - `dnd-tree-item-clone`
-      - `dnd-tree-item-indicator`
-      - `dnd-tree-item-container`
-      - `dnd-tree-item-container-clone`
-      - `dnd-tree-item-container-indicator`
-      - `dnd-tree-item-content`
-      - `dnd-tree-item-children-count`
-      - `dnd-tree-item-actions`
-      - `dnd-tree-item-action-handle`
-      - `dnd-tree-item-action-collapsed`
-      - `dnd-tree-item-action-delete`
-    </div>
-  </div>
-</div>
+## CSS Class Names
 
-<style>
-  {`
-  .sb-container {
-    margin-bottom: 48px;
-  }
-
-  .sb-section {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-  }
-
-  .sb-section-content {
-    width: 100%;
-  }
-
-  img {
-    object-fit: cover;
-  }
-
-  .sb-section-title {
-    margin-bottom: 32px;
-  }
-
-  .sb-section a:not(h1 a, h2 a, h3 a) {
-    font-size: 14px;
-  }
-  `}
-</style>
+- `dnd-tree-item`
+- `dnd-tree-item-clone`
+- `dnd-tree-item-indicator`
+- `dnd-tree-item-container`
+- `dnd-tree-item-container-clone`
+- `dnd-tree-item-container-indicator`
+- `dnd-tree-item-content`
+- `dnd-tree-item-children-count`
+- `dnd-tree-item-actions`
+- `dnd-tree-item-action-handle`
+- `dnd-tree-item-action-collapsed`
+- `dnd-tree-item-action-delete`
