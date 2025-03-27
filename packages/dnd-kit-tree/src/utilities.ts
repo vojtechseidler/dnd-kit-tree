@@ -18,6 +18,7 @@ export function getProjection(
   indentationWidth: number,
   depthLimit?: number
 ) {
+  const item = items.find(({ id }) => id === activeId);
   const overItemIndex = items.findIndex(({ id }) => id === overId);
   const activeItemIndex = items.findIndex(({ id }) => id === activeId);
   const activeItem = items[activeItemIndex];
@@ -26,12 +27,20 @@ export function getProjection(
   const dragDepth = getDragDepth(dragOffset, indentationWidth);
   const projectedDepth = activeItem.depth + dragDepth;
   const nextItem = newItems.length > 1 ? newItems[overItemIndex + 1] : undefined;
+
+  let depth = projectedDepth;
+  const minDepth = nextItem ? getMinDepth({ nextItem }) : 0;
   let maxDepth = getMaxDepth({
     previousItem,
     depthLimit,
   });
-  const minDepth = nextItem ? getMinDepth({ nextItem }) : 0;
-  let depth = projectedDepth;
+
+  // If the item has children, we need to check if the depth limit is reached
+  if (depthLimit !== undefined) {
+    if (item && getMaxDepthFromFlattenItem(item) + 1 > depthLimit) {
+      maxDepth = item.depth;
+    }
+  }
 
   if (projectedDepth >= maxDepth) {
     depth = maxDepth;
@@ -214,4 +223,15 @@ export function removeChildrenOf(items: FlattenedItem<unknown>[], ids: UniqueIde
 
     return true;
   });
+}
+
+function getMaxDepthFromFlattenItem(item: FlattenedItem<unknown>, initial: number = 0): number {
+  let res = initial;
+  if (item.children.length) {
+    res += 1;
+    for (const child of item.children) {
+      res = Math.max(res, getMaxDepthFromFlattenItem(child as FlattenedItem<unknown>, res));
+    }
+  }
+  return res;
 }

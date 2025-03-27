@@ -66,6 +66,7 @@ export const Default: Story = {
   args: {
     removable: true,
     collapsible: true,
+    maxDepth: 5,
     indentationWidth: 25,
   },
   render: (props) => <StoryHook {...props} />,
@@ -104,7 +105,6 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
   return (
     <SortableTree
       {...props}
-      maxDepth={2}
       value={value}
       onChange={setValue}
       adjustTranslateY={-20}
@@ -114,7 +114,7 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
             zIndex: 1,
             margin: "10px 0",
             position: "relative",
-            paddingLeft: itemProps.depth * 40,
+            paddingLeft: itemProps.depth * (props.indentationWidth ?? 40),
           }}>
             <div
               ref={itemProps.containerRef}
@@ -265,6 +265,7 @@ export const Custom: Story = {
   args: {
     removable: true,
     collapsible: true,
+    maxDepth: 2,
     indentationWidth: 25,
   },
   render: (props) => <StoryHookCustom {...props} />,
@@ -303,7 +304,6 @@ const StoryHookCustomTailwind = (props: SortableTreeProps<unknown>) => {
   return (
     <SortableTree
       {...props}
-      maxDepth={2}
       value={value}
       onChange={setValue}
       adjustTranslateY={-20}
@@ -312,7 +312,7 @@ const StoryHookCustomTailwind = (props: SortableTreeProps<unknown>) => {
           <div
             className="z-5 my-2 relative"
             style={{
-              paddingLeft: itemProps.depth * 40,
+              paddingLeft: itemProps.depth * (props.indentationWidth ?? 40),
             }}
           >
             <div
@@ -393,6 +393,7 @@ export const CustomTailwind: Story = {
   args: {
     removable: true,
     collapsible: true,
+    maxDepth: 2,
     indentationWidth: 25,
   },
   render: (props) => <StoryHookCustomTailwind {...props} />,
