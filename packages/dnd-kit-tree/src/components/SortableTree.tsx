@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import { CSS } from "@dnd-kit/utilities";
-import { useRef, useMemo, useState, useEffect, ReactNode } from "react";
 import VirtualList from "react-tiny-virtual-list";
+import { useRef, useMemo, useState, useEffect, ReactNode, CSSProperties } from "react";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import {
   Modifier,
@@ -77,6 +77,7 @@ export interface SortableTreeProps<T> {
   adjustTranslateY?: number;
   indentationWidth?: number;
   virtual?: SortableTreeVirtualProps;
+  grabbingCursor?: CSSProperties["cursor"];
   onChange?: (items: TreeItems<T>) => void;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
@@ -88,10 +89,11 @@ export function SortableTree<T>({
   maxDepth,
   removable,
   collapsible,
-  indentationWidth = 50,
-  adjustTranslateY = -25,
   onChange,
   renderItem,
+  indentationWidth = 50,
+  adjustTranslateY = -25,
+  grabbingCursor = "grabbing",
   renderItemContent = (item) => <div>{item.id}</div>,
 }: SortableTreeProps<T>) {
   const indicator = true;
@@ -102,6 +104,9 @@ export function SortableTree<T>({
     parentId: UniqueIdentifier | null;
     overId: UniqueIdentifier;
   } | null>(null);
+
+  const defaultBodyCursor = useRef<string | null>(null);
+  const defaultBodyUserSelect = useRef<string | null>(null);
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree<T>(value);
@@ -168,7 +173,10 @@ export function SortableTree<T>({
       });
     }
 
-    document.body.style.setProperty("cursor", "grabbing");
+    defaultBodyCursor.current = document.body.style.getPropertyValue("cursor");
+    defaultBodyUserSelect.current = document.body.style.getPropertyValue("user-select");
+    document.body.style.setProperty("cursor", grabbingCursor);
+    document.body.style.setProperty("user-select", "none");
   }
 
   function handleDragMove({ delta }: DragMoveEvent) {
@@ -208,7 +216,8 @@ export function SortableTree<T>({
     setOffsetLeft(0);
     setCurrentPosition(null);
 
-    document.body.style.setProperty("cursor", "");
+    document.body.style.setProperty("cursor", defaultBodyCursor.current);
+    document.body.style.setProperty("user-select", defaultBodyUserSelect.current);
   }
 
   function handleRemove(id: UniqueIdentifier) {

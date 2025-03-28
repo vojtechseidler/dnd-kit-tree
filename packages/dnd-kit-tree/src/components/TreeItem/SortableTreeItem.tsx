@@ -2,7 +2,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { CSSProperties, ReactNode } from "react";
 import { useSortable, AnimateLayoutChanges } from "@dnd-kit/sortable";
 
-import { iOS } from "../../utilities";
 import { FlattenedItem, RenderItemProps } from "../../types";
 import { TreeItem, Props as TreeItemProps } from "./TreeItem";
 
@@ -39,7 +38,6 @@ export function SortableTreeItem<T>({ node, renderItem, renderItemContent, ...pr
       style={style}
       isSorting={isSorting}
       isDragging={isDragging}
-      disableSelection={iOS}
       renderItem={renderItem}
       ref={setDraggableNodeRef}
       wrapperRef={setDroppableNodeRef}
@@ -47,6 +45,10 @@ export function SortableTreeItem<T>({ node, renderItem, renderItemContent, ...pr
       handleProps={{
         ...attributes,
         ...listeners,
+        style: {
+          ...props.handleProps?.style,
+          touchAction: "none",
+        },
       }}
       {...props}
     />

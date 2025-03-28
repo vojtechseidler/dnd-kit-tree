@@ -18,7 +18,6 @@ export interface Props<T> extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
   node: FlattenedItem<T>;
   indentationWidth: number;
   handleProps?: ActionProps;
-  disableSelection?: boolean;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
 
   onRemove?(): void;
@@ -43,7 +42,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
       childCount,
       isDragging,
       handleProps,
-      disableSelection,
       indentationWidth,
       onRemove,
       onCollapse,
@@ -83,7 +81,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
           isDragging && styles.itemDragging,
           isDragging && indicator && styles.itemDraggingIndicator,
           isDragging && isSorting && styles.itemGhostSorting,
-          disableSelection && styles.itemDisableSelection,
           clone && styles.itemClone,
           "dnd-tree-item",
           clone && "dnd-tree-item-clone",

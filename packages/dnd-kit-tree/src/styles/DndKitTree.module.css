@@ -92,13 +92,6 @@
     border: 1px solid #dedede;
 }
 
-.itemDisableSelection {
-    & * {
-        user-select: none;
-        -webkit-user-select: none;
-    }
-}
-
 .itemGhostSorting {
     pointer-events: none;
 }
