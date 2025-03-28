@@ -24,11 +24,14 @@ export function getProjection(
   const activeItem = items[activeItemIndex];
   const newItems = arrayMove(items, activeItemIndex, overItemIndex);
   const previousItem = newItems[overItemIndex - 1];
-  const dragDepth = getDragDepth(dragOffset, indentationWidth);
-  const projectedDepth = activeItem.depth + dragDepth;
   const nextItem = newItems.length > 1 ? newItems[overItemIndex + 1] : undefined;
 
+  const dragDepth = getDragDepth(dragOffset, indentationWidth);
+  const projectedDepth = activeItem.depth + dragDepth;
   let depth = projectedDepth;
+
+  const parentNode = getParentNode(newItems, overItemIndex, depth, previousItem);
+
   const minDepth = nextItem ? getMinDepth({ nextItem }) : 0;
   let maxDepth = getMaxDepth({
     previousItem,
@@ -36,9 +39,10 @@ export function getProjection(
   });
 
   // If the item has children, we need to check if the depth limit is reached
-  if (depthLimit !== undefined) {
-    if (item && getMaxDepthFromFlattenItem(item) + 1 > depthLimit) {
-      maxDepth = item.depth;
+  if (depthLimit !== undefined && item && parentNode) {
+    const treeMaxDepth = getMaxDepthFromFlattenItem(item) + parentNode.depth;
+    if (treeMaxDepth + 1 > depthLimit) {
+      maxDepth = parentNode.depth;
     }
   }
 
@@ -48,28 +52,36 @@ export function getProjection(
     depth = minDepth;
   }
 
-  return { depth, maxDepth, minDepth, parentId: getParentId() };
+  return {
+    depth,
+    maxDepth,
+    minDepth,
+    parentId: getParentNode(newItems, overItemIndex, depth, previousItem)?.id ?? null,
+  };
+}
 
-  function getParentId() {
-    if (depth === 0 || !previousItem) {
-      return null;
-    }
-
-    if (depth === previousItem.depth) {
-      return previousItem.parentId;
-    }
-
-    if (depth > previousItem.depth) {
-      return previousItem.id;
-    }
-
-    const newParent = newItems
-      .slice(0, overItemIndex)
-      .reverse()
-      .find((item) => item.depth === depth)?.parentId;
-
-    return newParent ?? null;
+function getParentNode(
+  items: FlattenedItem<unknown>[],
+  overIndex: number,
+  depth: number,
+  previousItem?: FlattenedItem<unknown>
+) {
+  if (depth === 0 || !previousItem) {
+    return null;
   }
+
+  if (depth === previousItem.depth) {
+    return items.find(({ id }) => id === previousItem.parentId);
+  }
+
+  if (depth > previousItem.depth) {
+    return items.find(({ id }) => id === previousItem.id);
+  }
+
+  return items
+    .slice(0, overIndex)
+    .reverse()
+    .find((item) => item.depth === depth);
 }
 
 function getMaxDepth({

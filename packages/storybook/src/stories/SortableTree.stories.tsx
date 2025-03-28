@@ -123,7 +123,7 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
                 ...(itemProps.isDragging ? {
                   height: 44,
                   padding: 10,
-                  display:"flex",
+                  display: "flex",
                   borderRadius: 5,
                   position: "relative",
                   border: "1px dashed #000",
@@ -521,4 +521,4 @@ export const Virtualization: Story = {
     indentationWidth: 25,
   },
   render: (props) => <StoryVirtualization {...props} />,
-}
+};
