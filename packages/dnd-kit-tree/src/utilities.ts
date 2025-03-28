@@ -30,25 +30,32 @@ export function getProjection(
   const projectedDepth = activeItem.depth + dragDepth;
   let depth = projectedDepth;
 
-  const parentNode = getParentNode(newItems, overItemIndex, depth, previousItem);
-
   const minDepth = nextItem ? getMinDepth({ nextItem }) : 0;
   let maxDepth = getMaxDepth({
     previousItem,
     depthLimit,
   });
 
+  if (projectedDepth >= maxDepth) {
+    depth = maxDepth;
+  } else if (projectedDepth < minDepth) {
+    depth = minDepth;
+  }
+
+  const parentNode = getParentNode(newItems, overItemIndex, depth, previousItem);
+
   // If the item has children, we need to check if the depth limit is reached
   if (depthLimit !== undefined && item && parentNode) {
-    const treeMaxDepth = getMaxDepthFromFlattenItem(item) + parentNode.depth;
-    if (treeMaxDepth + 1 > depthLimit) {
+    const treeDepth = getMaxDepthFromFlattenItem(item);
+    const treeMaxDepth = treeDepth + parentNode.depth;
+    if (treeMaxDepth >= depthLimit) {
       maxDepth = parentNode.depth;
     }
   }
 
-  if (projectedDepth >= maxDepth) {
+  if (depth >= maxDepth) {
     depth = maxDepth;
-  } else if (projectedDepth < minDepth) {
+  } else if (depth < minDepth) {
     depth = minDepth;
   }
 
@@ -78,10 +85,12 @@ function getParentNode(
     return items.find(({ id }) => id === previousItem.id);
   }
 
-  return items
+  const parentId = items
     .slice(0, overIndex)
     .reverse()
-    .find((item) => item.depth === depth);
+    .find((item) => item.depth === depth)?.parentId;
+
+  return parentId ? items.find(({ id }) => id === parentId) : undefined;
 }
 
 function getMaxDepth({
