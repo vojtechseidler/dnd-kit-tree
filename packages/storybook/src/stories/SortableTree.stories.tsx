@@ -405,7 +405,7 @@ export const CustomTailwind: Story = {
 
 const StoryVirtualization = (props: SortableTreeProps<unknown>) => {
   const [value, setValue] = useState<TreeItems<Data>>(
-    Array.from({ length: 200 }, (_, i) => ({
+    Array.from({ length: 100 }, (_, i) => ({
       id: `id-${i + 1}`,
       data: { label: `Item ${i + 1}` },
       children:

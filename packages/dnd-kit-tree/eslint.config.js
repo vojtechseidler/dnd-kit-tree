@@ -19,6 +19,7 @@ export default [
         window: true,
         console: true,
         document: true,
+        navigator: true,
       },
       parserOptions: {
         project: "./tsconfig.json",

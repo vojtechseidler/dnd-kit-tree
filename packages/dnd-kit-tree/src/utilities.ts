@@ -4,6 +4,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 
 import type { TreeItem, TreeItems, FlattenedItem } from "./types";
 
+export const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
 }

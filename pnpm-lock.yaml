@@ -6,7 +6,17 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      '@dnd-kit/core':
+        specifier: ^6.3.1
+        version: 6.3.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@dnd-kit/sortable':
+        specifier: ^10.0.0
+        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      '@dnd-kit/utilities':
+        specifier: ^3.2.2
+        version: 3.2.2(react@19.0.0)
 
   packages/dnd-kit-tree:
     dependencies:
@@ -19,9 +29,6 @@ importers:
       react-dom:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.0.0(react@19.0.0)
-      react-tiny-virtual-list:
-        specifier: ^2.2.0
-        version: 2.2.0(react@19.0.0)
     devDependencies:
       '@dnd-kit/core':
         specifier: ^6.3.1
@@ -3038,11 +3045,6 @@ packages:
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
-
-  react-tiny-virtual-list@2.2.0:
-    resolution: {integrity: sha512-MDiy2xyqfvkWrRiQNdHFdm36lfxmcLLKuYnUqcf9xIubML85cmYCgzBJrDsLNZ3uJQ5LEHH9BnxGKKSm8+C0Bw==}
-    peerDependencies:
-      react: 15.x || 16.x
 
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
@@ -6724,11 +6726,6 @@ snapshots:
   react-is@17.0.2: {}
 
   react-refresh@0.14.2: {}
-
-  react-tiny-virtual-list@2.2.0(react@19.0.0):
-    dependencies:
-      prop-types: 15.8.1
-      react: 19.0.0
 
   react@19.0.0: {}
 

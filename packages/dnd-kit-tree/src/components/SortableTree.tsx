@@ -1,6 +1,5 @@
 import { createPortal } from "react-dom";
 import { CSS } from "@dnd-kit/utilities";
-import VirtualList from "react-tiny-virtual-list";
 import { useRef, useMemo, useState, useEffect, ReactNode, CSSProperties } from "react";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import {
@@ -24,8 +23,10 @@ import {
 
 import type { TreeItems, FlattenedItem, SensorContext, RenderItemProps } from "../types";
 
+import { VirtualList } from "./VirtualList";
 import { SortableTreeItem } from "./TreeItem";
 import {
+  isSafari,
   buildTree,
   removeItem,
   flattenTree,
@@ -334,8 +335,25 @@ export function SortableTree<T>({
             stickyIndices={
               activeNode ? [flattenedItems.findIndex(({ id }) => id === activeNode.id)] : undefined
             }
+            onScroll={(_, e) => {
+              // Fix Safari automatic scroll issue
+              if (isSafari) {
+                const el = e.target as HTMLDivElement;
+                const displayOriginal = el.style.getPropertyValue("display");
+                if (activeNode) {
+                  el.style.setProperty("display", "none");
+                  void el.offsetHeight;
+                  el.style.setProperty("display", displayOriginal);
+                } else {
+                  el.style.setProperty("display", displayOriginal);
+                }
+              }
+            }}
             renderItem={({ index, style }) => {
               const node = flattenedItems[index];
+              if (!node) {
+                return null;
+              }
               return (
                 <div key={index} style={{ ...style, position: "absolute" }}>
                   {renderSortableItem(node)}

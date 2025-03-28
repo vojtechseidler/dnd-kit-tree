@@ -9,5 +9,10 @@
     "storybook:dev": "pnpm run --filter=storybook storybook",
     "npm-publish": "pnpm run build && pnpm run --filter=dnd-kit-tree npm-publish",
     "storybook:build": "pnpm run build && pnpm run --filter=storybook build-storybook"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2"
   }
 }
