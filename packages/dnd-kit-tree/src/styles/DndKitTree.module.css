@@ -138,3 +138,10 @@
         transform: rotate(-90deg);
     }
 }
+
+.virtualListWrapper {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

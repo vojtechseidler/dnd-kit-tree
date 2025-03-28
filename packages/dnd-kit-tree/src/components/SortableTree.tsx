@@ -36,6 +36,8 @@ import {
   removeChildrenOf,
 } from "../utilities";
 
+import appStyles from "../styles/DndKitTree.module.css";
+
 const measuring = {
   droppable: {
     strategy: MeasuringStrategy.Always,
@@ -68,6 +70,7 @@ const dropAnimationConfig: DropAnimation = {
 export interface SortableTreeVirtualProps {
   height: number;
   itemSize: number;
+  hideScrollbar?: boolean;
 }
 
 export interface SortableTreeProps<T> {
@@ -330,8 +333,10 @@ export function SortableTree<T>({
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         {virtual ? (
           <VirtualList
-            {...virtual}
+            height={virtual.height}
+            itemSize={virtual.itemSize}
             itemCount={flattenedItems.length}
+            className={virtual?.hideScrollbar ? appStyles.virtualListWrapper : undefined}
             stickyIndices={
               activeNode ? [flattenedItems.findIndex(({ id }) => id === activeNode.id)] : undefined
             }
