@@ -9,7 +9,6 @@ import {
   useSensors,
   DragOverlay,
   DragEndEvent,
-  Announcements,
   closestCenter,
   PointerSensor,
   DragMoveEvent,
@@ -73,6 +72,12 @@ export interface SortableTreeVirtualProps {
   hideScrollbar?: boolean;
 }
 
+export interface SortableTreeMove {
+  id: string;
+  afterId?: string;
+  parentId?: string;
+}
+
 export interface SortableTreeProps<T> {
   maxDepth?: number;
   removable?: boolean;
@@ -82,6 +87,7 @@ export interface SortableTreeProps<T> {
   indentationWidth?: number;
   virtual?: SortableTreeVirtualProps;
   grabbingCursor?: CSSProperties["cursor"];
+  onMove?: (action: SortableTreeMove) => void;
   onChange?: (items: TreeItems<T>) => void;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
@@ -93,6 +99,7 @@ export function SortableTree<T>({
   maxDepth,
   removable,
   collapsible,
+  onMove,
   onChange,
   renderItem,
   indentationWidth = 50,
@@ -104,10 +111,6 @@ export function SortableTree<T>({
   const [activeNode, setActiveNode] = useState<FlattenedItem<T> | null>(null);
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null);
   const [offsetLeft, setOffsetLeft] = useState(0);
-  const [currentPosition, setCurrentPosition] = useState<{
-    parentId: UniqueIdentifier | null;
-    overId: UniqueIdentifier;
-  } | null>(null);
 
   const defaultBodyCursor = useRef<string | null>(null);
   const defaultBodyUserSelect = useRef<string | null>(null);
@@ -146,37 +149,11 @@ export function SortableTree<T>({
     };
   }, [flattenedItems, offsetLeft]);
 
-  const announcements: Announcements = {
-    onDragStart({ active }) {
-      return `Picked up ${active.id}.`;
-    },
-    onDragMove({ active, over }) {
-      return getMovementAnnouncement("onDragMove", active.id, over?.id);
-    },
-    onDragOver({ active, over }) {
-      return getMovementAnnouncement("onDragOver", active.id, over?.id);
-    },
-    onDragEnd({ active, over }) {
-      return getMovementAnnouncement("onDragEnd", active.id, over?.id);
-    },
-    onDragCancel({ active }) {
-      return `Moving was cancelled. ${active.id} was dropped in its original position.`;
-    },
-  };
-
   function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
     setOverId(activeId);
 
     const activeItem = flattenedItems.find(({ id }) => id === activeId);
     setActiveNode(activeItem || null);
-
-    if (activeItem) {
-      setCurrentPosition({
-        parentId: activeItem.parentId,
-        overId: activeId,
-      });
-    }
-
     defaultBodyCursor.current = document.body.style.getPropertyValue("cursor");
     defaultBodyUserSelect.current = document.body.style.getPropertyValue("user-select");
     document.body.style.setProperty("cursor", grabbingCursor);
@@ -196,6 +173,7 @@ export function SortableTree<T>({
 
     if (projected && over) {
       const { depth, parentId } = projected;
+      const initialJson = JSON.stringify(flattenTree(value));
       const clonedItems: FlattenedItem<T>[] = JSON.parse(JSON.stringify(flattenTree(value)));
       const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
       const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
@@ -204,8 +182,26 @@ export function SortableTree<T>({
       clonedItems[activeIndex] = { ...activeTreeItem, depth, parentId };
 
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
+      if (JSON.stringify(sortedItems) === initialJson) {
+        return;
+      }
+
       const newItems = buildTree(sortedItems) as TreeItems<T>;
 
+      const depthItems = sortedItems.filter(
+        ({ parentId }) => parentId === clonedItems[activeIndex].parentId
+      );
+
+      const currentDepthIndex = depthItems.findIndex(
+        ({ id }) => id === clonedItems[activeIndex].id
+      );
+
+      onMove?.({
+        id: clonedItems[activeIndex]?.id?.toString(),
+        parentId: clonedItems[activeIndex]?.parentId?.toString(),
+        afterId:
+          currentDepthIndex > 0 ? depthItems[currentDepthIndex - 1]?.id?.toString() : undefined,
+      });
       onChange?.(newItems);
     }
   }
@@ -218,8 +214,6 @@ export function SortableTree<T>({
     setOverId(null);
     setActiveNode(null);
     setOffsetLeft(0);
-    setCurrentPosition(null);
-
     document.body.style.setProperty("cursor", defaultBodyCursor.current);
     document.body.style.setProperty("user-select", defaultBodyUserSelect.current);
   }
@@ -234,66 +228,6 @@ export function SortableTree<T>({
         return !value;
       }) as TreeItems<T>
     );
-  }
-
-  function getMovementAnnouncement(
-    eventName: string,
-    activeId: UniqueIdentifier,
-    overId?: UniqueIdentifier
-  ) {
-    if (overId && projected) {
-      if (eventName !== "onDragEnd") {
-        if (
-          currentPosition &&
-          projected.parentId === currentPosition.parentId &&
-          overId === currentPosition.overId
-        ) {
-          return;
-        } else {
-          setCurrentPosition({
-            parentId: projected.parentId,
-            overId,
-          });
-        }
-      }
-
-      const clonedItems: FlattenedItem<T>[] = JSON.parse(JSON.stringify(flattenTree(value)));
-      const overIndex = clonedItems.findIndex(({ id }) => id === overId);
-      const activeIndex = clonedItems.findIndex(({ id }) => id === activeId);
-      const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
-
-      const previousItem = sortedItems[overIndex - 1];
-
-      let announcement;
-      const movedVerb = eventName === "onDragEnd" ? "dropped" : "moved";
-      const nestedVerb = eventName === "onDragEnd" ? "dropped" : "nested";
-
-      if (!previousItem) {
-        const nextItem = sortedItems.length > 1 ? sortedItems[overIndex + 1] : undefined;
-        announcement =
-          nextItem !== undefined
-            ? `${activeId} was ${movedVerb} before ${nextItem.id}.`
-            : `Cannot move ${activeId}.`;
-      } else {
-        if (projected.depth > previousItem.depth) {
-          announcement = `${activeId} was ${nestedVerb} under ${previousItem.id}.`;
-        } else {
-          let previousSibling: FlattenedItem<T> | undefined = previousItem;
-          while (previousSibling && projected.depth < previousSibling.depth) {
-            const parentId: UniqueIdentifier | null = previousSibling.parentId;
-            previousSibling = sortedItems.find(({ id }) => id === parentId);
-          }
-
-          if (previousSibling) {
-            announcement = `${activeId} was ${movedVerb} after ${previousSibling.id}.`;
-          }
-        }
-      }
-
-      return announcement;
-    }
-
-    return;
   }
 
   const adjustTranslate: Modifier = ({ transform }) => {
@@ -327,7 +261,6 @@ export function SortableTree<T>({
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
       onDragCancel={handleDragCancel}
-      accessibility={{ announcements }}
       collisionDetection={closestCenter}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>

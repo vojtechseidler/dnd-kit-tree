@@ -88,6 +88,7 @@ const MyComponent = () => {
 | `maxDepth`          | `number`                                         | `undefined` | The maximum depth of the tree. (undefined = Infinity)        |
 | `grabbingCursor`    | `string`                                         | `grabbing`  | The cursor style when dragging a tree node.                  |
 | `onChange`          | `(items: TreeItems<T>) => void`                  | `undefined` | Callback function triggered when the tree structure changes. |
+| `onMove`            | `(action: SortableTreeMove) => void`             | `undefined` | Callback function triggered when a node is moved.            |
 | `removable`         | `boolean`                                        | `false`     | Enables the ability to remove tree nodes.                    |
 | `collapsible`       | `boolean`                                        | `false`     | Enables the ability to collapse/expand tree nodes.           |
 | `indentationWidth`  | `number`                                         | `25`        | The width of indentation for child nodes in pixels.          |
