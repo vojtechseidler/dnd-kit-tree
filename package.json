@@ -2,7 +2,7 @@
   "name": "dnd-kit-tree-workspace",
   "author": "Vojtěch Seidler <mail@vojtech-seidler.cz>",
   "license": "MIT",
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.8.1",
   "scripts": {
     "build": "pnpm run --filter=dnd-kit-tree build",
     "dev": "pnpm run --filter=dnd-kit-tree build --watch",
