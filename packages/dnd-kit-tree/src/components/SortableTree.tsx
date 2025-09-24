@@ -83,6 +83,7 @@ export interface SortableTreeProps<T> {
   removable?: boolean;
   value: TreeItems<T>;
   collapsible?: boolean;
+  collapseChildren?: boolean;
   adjustTranslateY?: number;
   indentationWidth?: number;
   virtual?: SortableTreeVirtualProps;
@@ -99,6 +100,7 @@ export function SortableTree<T>({
   maxDepth,
   removable,
   collapsible,
+  collapseChildren,
   onMove,
   onChange,
   renderItem,
@@ -222,12 +224,23 @@ export function SortableTree<T>({
     onChange?.(removeItem(value, id) as TreeItems<T>);
   }
 
-  function handleCollapse(id: UniqueIdentifier) {
-    onChange?.(
-      setProperty(value, id, "collapsed", (value) => {
-        return !value;
-      }) as TreeItems<T>
-    );
+  function getCollapsedTree(items: TreeItems<T>, node: FlattenedItem<T>): TreeItems<T> {
+    let res = setProperty(items, node.id, "collapsed", () => true) as TreeItems<T>;
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        res = getCollapsedTree(items, child as FlattenedItem<T>);
+      }
+    }
+    return res;
+  }
+
+  function handleCollapse(node: FlattenedItem<T>) {
+    const collapse = !node.collapsed;
+    if (collapse && collapseChildren) {
+      onChange?.(getCollapsedTree(value, node));
+    } else {
+      onChange?.(setProperty(value, node.id, "collapsed", (v) => !v) as TreeItems<T>);
+    }
   }
 
   const adjustTranslate: Modifier = ({ transform }) => {
@@ -248,7 +261,7 @@ export function SortableTree<T>({
       indentationWidth={indentationWidth}
       onRemove={removable ? () => handleRemove(node.id) : undefined}
       depth={node.id === activeNode?.id && projected ? projected.depth : node.depth}
-      onCollapse={collapsible && node.children.length ? () => handleCollapse(node.id) : undefined}
+      onCollapse={collapsible && node.children.length ? () => handleCollapse(node) : undefined}
     />
   );
 

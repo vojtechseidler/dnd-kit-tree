@@ -66,6 +66,7 @@ export const Default: Story = {
   args: {
     removable: true,
     collapsible: true,
+    collapseChildren: false,
     maxDepth: 5,
     indentationWidth: 25,
   },
@@ -281,6 +282,7 @@ export const Custom: Story = {
   args: {
     removable: true,
     collapsible: true,
+    collapseChildren: false,
     maxDepth: 2,
     indentationWidth: 25,
   },
@@ -410,6 +412,7 @@ export const CustomTailwind: Story = {
   args: {
     removable: true,
     collapsible: true,
+    collapseChildren: false,
     maxDepth: 2,
     indentationWidth: 25,
   },
@@ -531,6 +534,7 @@ export const Virtualization: Story = {
   args: {
     removable: true,
     collapsible: true,
+    collapseChildren: false,
     maxDepth: 2,
     indentationWidth: 25,
   },

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "target": "ESNext",
     "module": "ESNext",
     "jsx": "react-jsx",
@@ -17,6 +18,13 @@
     "resolveJsonModule": true,
     "noEmit": false
   },
-  "include": ["src"],
-  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }
