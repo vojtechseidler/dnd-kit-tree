@@ -98,6 +98,7 @@ export interface SortableTreeProps<T> {
   onChange?: (items: TreeItems<T>) => void;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
   renderItemContent?: (item: FlattenedItem<T>) => ReactNode;
+  canMove?: (flattenedItem: FlattenedItem<T>, flattenedParent?: FlattenedItem<T> | null) => boolean;
 }
 
 export function SortableTree<T>({
@@ -108,6 +109,7 @@ export function SortableTree<T>({
   collapsible,
   collapseChildren,
   onMove,
+  canMove,
   onChange,
   renderItem,
   indentationWidth = 50,
@@ -139,7 +141,15 @@ export function SortableTree<T>({
 
   const projected =
     activeNode?.id && overId
-      ? getProjection(flattenedItems, activeNode.id, overId, offsetLeft, indentationWidth, maxDepth)
+      ? getProjection<T>(
+          flattenedItems,
+          activeNode.id,
+          overId,
+          offsetLeft,
+          indentationWidth,
+          maxDepth,
+          canMove
+        )
       : null;
 
   const sensorContext: SensorContext = useRef({
@@ -180,6 +190,9 @@ export function SortableTree<T>({
     resetState();
 
     if (projected && over) {
+      if (projected.canMove === false) {
+        return undefined;
+      }
       const { depth, parentId } = projected;
       const initialJson = JSON.stringify(flattenTree(value));
       const clonedItems: FlattenedItem<T>[] = JSON.parse(JSON.stringify(flattenTree(value)));
@@ -188,6 +201,10 @@ export function SortableTree<T>({
       const activeTreeItem = clonedItems[activeIndex];
 
       clonedItems[activeIndex] = { ...activeTreeItem, depth, parentId };
+
+      if (canMove && !canMove(clonedItems[activeIndex], projected.parentNode as FlattenedItem<T>)) {
+        return undefined;
+      }
 
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
       if (JSON.stringify(sortedItems) === initialJson) {

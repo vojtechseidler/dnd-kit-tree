@@ -11,19 +11,23 @@ function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
 }
 
-export function getProjection(
-  items: FlattenedItem<unknown>[],
+export function getProjection<T = unknown>(
+  items: FlattenedItem<T>[],
   activeId: UniqueIdentifier,
   overId: UniqueIdentifier,
   dragOffset: number,
   indentationWidth: number,
-  depthLimit?: number
+  depthLimit?: number,
+  canMoveCallback?: (
+    flattenedItem: FlattenedItem<T>,
+    parentNode?: FlattenedItem<T> | null
+  ) => boolean
 ) {
   const item = items.find(({ id }) => id === activeId);
   const overItemIndex = items.findIndex(({ id }) => id === overId);
   const activeItemIndex = items.findIndex(({ id }) => id === activeId);
   const activeItem = items[activeItemIndex];
-  const newItems = arrayMove(items, activeItemIndex, overItemIndex);
+  const newItems = arrayMove<FlattenedItem<T>>(items, activeItemIndex, overItemIndex);
   const previousItem = newItems[overItemIndex - 1];
   const nextItem = newItems.length > 1 ? newItems[overItemIndex + 1] : undefined;
 
@@ -43,7 +47,7 @@ export function getProjection(
     depth = minDepth;
   }
 
-  const parentNode = getParentNode(newItems, overItemIndex, depth, previousItem);
+  const parentNode = getParentNode<T>(newItems, overItemIndex, depth, previousItem);
 
   // If the item has children, we need to check if the depth limit is reached
   if (depthLimit !== undefined && item && parentNode) {
@@ -73,16 +77,16 @@ export function getProjection(
     depth = item.minDepth;
   }
 
-  const newParentId = getParentNode(newItems, overItemIndex, depth, previousItem)?.id ?? null;
-  if (item?.forceParentId !== undefined && item.forceParentId !== newParentId) {
-    depth = items.find(({ id }) => id === item?.forceParentId)?.depth ?? 0;
-    return {
-      depth,
-      maxDepth,
-      minDepth,
-      canMove: false,
-      parentId: item.forceParentId,
-    };
+  if (item?.forceParentId !== undefined && item.forceParentId !== parentNode?.id) {
+    canMove = false;
+  }
+
+  if (
+    item &&
+    canMoveCallback &&
+    !canMoveCallback({ ...item, depth, parentId: parentNode?.id ?? null }, parentNode)
+  ) {
+    canMove = false;
   }
 
   return {
@@ -90,15 +94,16 @@ export function getProjection(
     canMove,
     maxDepth,
     minDepth,
-    parentId: newParentId,
+    parentNode,
+    parentId: parentNode?.id ?? null,
   };
 }
 
-function getParentNode(
-  items: FlattenedItem<unknown>[],
+function getParentNode<T = unknown>(
+  items: FlattenedItem<T>[],
   overIndex: number,
   depth: number,
-  previousItem?: FlattenedItem<unknown>
+  previousItem?: FlattenedItem<T>
 ) {
   if (depth === 0 || !previousItem) {
     return null;
