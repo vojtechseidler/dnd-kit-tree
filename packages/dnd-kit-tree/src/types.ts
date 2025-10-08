@@ -3,6 +3,9 @@ import { CSSProperties, ForwardedRef, HTMLAttributes, RefObject } from "react";
 
 export type TreeItem<T = unknown> = {
   data?: T;
+  maxDepth?: number;
+  minDepth?: number;
+  forceParentId?: UniqueIdentifier;
   id: UniqueIdentifier;
   children: TreeItem<T>[];
   collapsed?: boolean;
@@ -14,12 +17,17 @@ export interface FlattenedItem<T> extends TreeItem<T> {
   parentId: UniqueIdentifier | null;
   depth: number;
   index: number;
+  maxDepth?: number;
 }
 
 export type SensorContext = RefObject<{
   items: FlattenedItem<unknown>[];
   offset: number;
 }>;
+
+export type TreeItemProjection = {
+  canMove?: boolean;
+};
 
 export interface RenderItemProps<T> {
   node: FlattenedItem<T>;
@@ -31,6 +39,7 @@ export interface RenderItemProps<T> {
   isRemovable: boolean;
   isCollapsible: boolean;
   containerStyle?: CSSProperties;
+  itemProjected?: TreeItemProjection;
   wrapperRef?: (node: HTMLDivElement) => void;
   containerRef: ForwardedRef<HTMLDivElement>;
   handleProps?: HTMLAttributes<HTMLButtonElement>;

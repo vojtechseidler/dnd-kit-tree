@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { CSSProperties, forwardRef, HTMLAttributes, ReactNode } from "react";
 
 import type { ActionProps } from "./components";
-import type { FlattenedItem, RenderItemProps } from "../../types";
+import type { FlattenedItem, RenderItemProps, TreeItemProjection } from "../../types";
 
 import { Action, Remove, Handle } from "./components";
 
@@ -18,6 +18,7 @@ export interface Props<T> extends Omit<HTMLAttributes<HTMLDivElement>, "id"> {
   node: FlattenedItem<T>;
   indentationWidth: number;
   handleProps?: ActionProps;
+  itemProjected?: TreeItemProjection;
   renderItem?: (props: RenderItemProps<T>) => ReactNode;
 
   onRemove?(): void;
@@ -42,6 +43,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
       childCount,
       isDragging,
       handleProps,
+      itemProjected,
       indentationWidth,
       onRemove,
       onCollapse,
@@ -56,6 +58,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
       return renderItem({
         node,
         depth,
+        itemProjected,
         clone: !!clone,
         containerRef: ref,
         containerStyle: style,
@@ -97,7 +100,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props<any>>(
             clone && styles.itemContainerClone,
             "dnd-tree-item-container",
             clone && "dnd-tree-item-container-clone",
-            isDragging && indicator && "dnd-tree-item-container-indicator"
+            isDragging && indicator && "dnd-tree-item-container-indicator",
+            itemProjected?.canMove === false && styles.itemContainerGhostIndicatorCannotMove,
           )}
         >
           <div className={clsx(styles.itemActions, "dnd-tree-item-actions")}>

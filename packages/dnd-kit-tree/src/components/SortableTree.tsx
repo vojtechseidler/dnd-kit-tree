@@ -20,7 +20,13 @@ import {
   defaultDropAnimation,
 } from "@dnd-kit/core";
 
-import type { TreeItems, FlattenedItem, SensorContext, RenderItemProps } from "../types";
+import type {
+  TreeItems,
+  FlattenedItem,
+  SensorContext,
+  RenderItemProps,
+  TreeItemProjection,
+} from "../types";
 
 import { VirtualList } from "./VirtualList";
 import { SortableTreeItem } from "./TreeItem";
@@ -251,19 +257,22 @@ export function SortableTree<T>({
     };
   };
 
-  const renderSortableItem = (node: FlattenedItem<T>) => (
-    <SortableTreeItem
-      node={node}
-      key={node.id}
-      indicator={indicator}
-      renderItem={renderItem}
-      renderContent={renderItemContent}
-      indentationWidth={indentationWidth}
-      onRemove={removable ? () => handleRemove(node.id) : undefined}
-      depth={node.id === activeNode?.id && projected ? projected.depth : node.depth}
-      onCollapse={collapsible && node.children.length ? () => handleCollapse(node) : undefined}
-    />
-  );
+  const renderSortableItem = (node: FlattenedItem<T>, itemProjected?: TreeItemProjection) => {
+    return (
+      <SortableTreeItem
+        node={node}
+        key={node.id}
+        indicator={indicator}
+        renderItem={renderItem}
+        itemProjected={itemProjected}
+        renderContent={renderItemContent}
+        indentationWidth={indentationWidth}
+        depth={node.id === activeNode?.id && projected ? projected.depth : node.depth}
+        onRemove={removable ? () => handleRemove(node.id) : undefined}
+        onCollapse={collapsible && node.children.length ? () => handleCollapse(node) : undefined}
+      />
+    );
+  };
 
   return (
     <DndContext
@@ -307,13 +316,21 @@ export function SortableTree<T>({
               }
               return (
                 <div key={index} style={{ ...style, position: "absolute" }}>
-                  {renderSortableItem(node)}
+                  {renderSortableItem(
+                    node,
+                    activeNode?.id === node.id ? { canMove: projected?.canMove } : undefined
+                  )}
                 </div>
               );
             }}
           />
         ) : (
-          flattenedItems.map((node) => renderSortableItem(node))
+          flattenedItems.map((node) =>
+            renderSortableItem(
+              node,
+              activeNode?.id === node.id ? { canMove: projected?.canMove } : undefined
+            )
+          )
         )}
         {createPortal(
           <DragOverlay

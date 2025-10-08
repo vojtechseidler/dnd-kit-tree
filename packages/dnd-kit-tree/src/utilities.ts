@@ -60,11 +60,37 @@ export function getProjection(
     depth = minDepth;
   }
 
+  let canMove = true;
+  if (item?.maxDepth !== undefined && depth > item.maxDepth) {
+    if (minDepth > item.maxDepth) {
+      canMove = false;
+    }
+    depth = item.maxDepth;
+  }
+
+  if (item?.minDepth !== undefined && depth < item.minDepth) {
+    canMove = false;
+    depth = item.minDepth;
+  }
+
+  const newParentId = getParentNode(newItems, overItemIndex, depth, previousItem)?.id ?? null;
+  if (item?.forceParentId !== undefined && item.forceParentId !== newParentId) {
+    depth = items.find(({ id }) => id === item?.forceParentId)?.depth ?? 0;
+    return {
+      depth,
+      maxDepth,
+      minDepth,
+      canMove: false,
+      parentId: item.forceParentId,
+    };
+  }
+
   return {
     depth,
+    canMove,
     maxDepth,
     minDepth,
-    parentId: getParentNode(newItems, overItemIndex, depth, previousItem)?.id ?? null,
+    parentId: newParentId,
   };
 }
 

@@ -44,6 +44,7 @@ const StoryHook = (props: SortableTreeProps<unknown>) => {
     },
     {
       id: "id-5",
+      maxDepth: 0,
       children: [],
       data: { label: "Root Item 3" },
     },
@@ -130,8 +131,11 @@ const StoryHookCustom = (props: SortableTreeProps<unknown>) => {
                       display: "flex",
                       borderRadius: 5,
                       position: "relative",
-                      border: "1px dashed #000",
                       backgroundColor: "rgba(0,0,0,0.1)",
+                      border:
+                        itemProps.itemProjected?.canMove === false
+                          ? "1px solid #ff5233"
+                          : "1px dashed #000",
                     }
                   : {
                       gap: 10,
@@ -297,6 +301,7 @@ const StoryHookCustomTailwind = (props: SortableTreeProps<unknown>) => {
       children: [
         {
           id: "id-2",
+          maxDepth: 1,
           data: { label: "Sub Item 2" },
           children: [
             {
